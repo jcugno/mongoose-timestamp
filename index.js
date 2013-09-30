@@ -7,7 +7,9 @@
 
 var BinaryParser = require('bson').BinaryParser;
 
-function timestampsPlugin(schema, options) {
+var deletedPath = 'deletedAt';
+
+exports.plugin = function(schema, options) {
   if (schema.path('_id')) {
     schema.add({
       updatedAt: Date
@@ -41,4 +43,19 @@ function timestampsPlugin(schema, options) {
   }
 }
 
-module.exports = timestampsPlugin;
+
+exports.install = function(mongoose) {
+  var originalCast;
+
+  originalCast = mongoose.Query.prototype.cast;
+  mongoose.Query.prototype.cast = function(model, obj) {
+    if (this.op !== 'remove') {
+      obj || (obj = this._conditions);
+      this.where(deletedPath, {
+        $exists: false
+      });
+    }
+    return originalCast(model, obj);
+  };
+  return true;
+};
