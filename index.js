@@ -9,7 +9,7 @@ var BinaryParser = require('bson').BinaryParser;
 
 var deletedPath = 'deletedAt';
 
-exports.plugin = function(schema, options) {
+module.exports = exports.plugin = function(schema, options) {
   if (schema.path('_id')) {
     schema.add({
       updatedAt: Date
