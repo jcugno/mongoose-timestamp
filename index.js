@@ -55,7 +55,8 @@ exports.install = function(mongoose) {
         $exists: false
       });
     }
-    return originalCast(model, obj);
+
+    return originalCast.call(this, model, obj);
   };
   return true;
 };
