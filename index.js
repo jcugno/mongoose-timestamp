@@ -13,6 +13,7 @@ exports = module.exports = function(schema, options) {
   if (schema.path('_id')) {
     schema.add({
       updatedAt: Date
+    , deletedAt: Date
     });
     schema.virtual('createdAt')
       .get( function () {
@@ -31,6 +32,7 @@ exports = module.exports = function(schema, options) {
     schema.add({
         createdAt: Date
       , updatedAt: Date
+      , deletedAt: Date
     });
     schema.pre('save', function (next) {
       if (!this.createdAt) {
